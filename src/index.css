@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================
+   BASE / RESET
+   ============================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ---- Light mode body ---- */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ---- Dark mode body ---- */
+.dark body,
+body.dark {
+  background-color: #0a0e1a;
+  color: #ffffff;
+}
+
+#root { position: relative; z-index: 1; }
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font-family: inherit; }
+input, textarea, select { font-family: inherit; }
+
+/* ============================
+   SHADCN CSS VARIABLES
+   ============================ */
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    --background: #f0f4f8;
+    --foreground: #1a202c;
+    --card: #ffffff;
+    --card-foreground: #1a202c;
+    --popover: #ffffff;
+    --popover-foreground: #1a202c;
+    --primary: #6c63ff;
+    --primary-foreground: #ffffff;
+    --secondary: #e8eef5;
+    --secondary-foreground: #4a5568;
+    --muted: #f0f4f8;
+    --muted-foreground: #4a5568;
+    --accent: #00c8ff;
+    --accent-foreground: #003333;
+    --destructive: #ff5252;
+    --destructive-foreground: #ffffff;
+    --border: rgba(0,212,255,0.2);
+    --input: rgba(0,0,0,0.05);
+    --ring: #6c63ff;
+    /* Scrollbar light */
+    --scrollbar-bg: #f0f4f8;
+    --scrollbar-thumb: rgba(108,99,255,0.2);
+    --scrollbar-thumb-hover: #6c63ff;
+  }
+
+  .dark, [data-theme="dark"] {
+    --background: #0a0e1a;
+    --foreground: #ffffff;
+    --card: #141d35;
+    --card-foreground: #ffffff;
+    --popover: #141d35;
+    --popover-foreground: #ffffff;
+    --primary: #6c63ff;
+    --primary-foreground: #ffffff;
+    --secondary: #1a2540;
+    --secondary-foreground: #8892b0;
+    --muted: #0f1629;
+    --muted-foreground: #8892b0;
+    --accent: #00d4ff;
+    --accent-foreground: #ffffff;
+    --destructive: #ff5252;
+    --destructive-foreground: #ffffff;
+    --border: rgba(108,99,255,0.15);
+    --input: rgba(255,255,255,0.05);
+    --ring: #6c63ff;
+    /* Scrollbar dark */
+    --scrollbar-bg: #0a0e1a;
+    --scrollbar-thumb: rgba(108,99,255,0.3);
+    --scrollbar-thumb-hover: #6c63ff;
+  }
+}
+
+/* ============================
+   GRADIENT TEXT UTILITY
+   ============================ */
+.gradient-text {
+  background: linear-gradient(135deg, #6c63ff, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================
+   CUSTOM SCROLLBAR
+   ============================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-bg); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+/* ============================
+   DARK BACKGROUND DECORATION
+   ============================ */
+.bg-deco {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 10% 20%, rgba(108,99,255,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 90% 80%, rgba(0,212,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark .bg-deco {
+  background:
+    radial-gradient(ellipse at 10% 20%, rgba(108,99,255,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 90% 80%, rgba(0,212,255,0.05) 0%, transparent 60%);
+}
+
+/* Light mode bg-deco override */
+[data-theme="light"] .bg-deco {
+  background:
+    radial-gradient(ellipse at 10% 20%, rgba(108,99,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at 90% 80%, rgba(0,212,255,0.02) 0%, transparent 60%);
+}
+
+/* ============================
+   TOAST OVERRIDES (light mode)
+   ============================ */
+[data-theme="light"] .Toastify__toast {
+  color: #000000;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+[data-theme="light"] .Toastify__toast--success { color: #10b981; }
+[data-theme="light"] .Toastify__toast--error { color: #ef4444; }
+[data-theme="light"] .Toastify__toast--info { color: #3b82f6; }
+[data-theme="light"] .Toastify__toast--warning { color: #f59e0b; }
+[data-theme="light"] .Toastify__progress-bar {
+  background: linear-gradient(to right, #3b82f6, #1e40af);
+}
+
+/* ============================
+   MISSION / GAMIFICATION
+   ============================ */
+.mission-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 14, 26, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 50; display: flex; align-items: center; justify-content: center;
+  flex-direction: column; padding: 40px; text-align: center;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes zoomIn { from{opacity:0; transform:scale(0.8);} to{opacity:1; transform:scale(1);} }
+@keyframes glitch {
+  0%{transform:translate(2px,0)}
+  20%{transform:translate(-2px,0)}
+  40%{transform:translate(2px,2px)}
+  60%{transform:translate(-2px,-2px)}
+  100%{transform:translate(0)}
+}
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ============================
+   HINT STYLES (used in Exercise)
+   ============================ */
+.hint-locked {
+  background: rgba(255,82,82,0.05); border: 1px dashed rgba(255,82,82,0.3);
+  padding: 12px; border-radius: 8px; text-align: center; margin-bottom: 8px;
+}
+.hint-btn {
+  background: rgba(255,82,82,0.1); color: #ff5252; border: 1px solid rgba(255,82,82,0.4);
+  padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;
+  transition: all 0.2s; font-family: 'JetBrains Mono', monospace; font-weight: bold;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.hint-btn:hover {
+  background: rgba(255,82,82,0.2); box-shadow: 0 0 10px rgba(255,82,82,0.3);
+}
+.hint-unlocked {
+  background: rgba(255,183,77,0.1); border: 1px solid rgba(255,183,77,0.4);
+  padding: 12px; border-radius: 8px; color: #ffb74d;
+  margin-bottom: 8px; font-size: 0.85rem; font-family: 'JetBrains Mono', monospace;
+  animation: glitch 0.3s linear;
+}

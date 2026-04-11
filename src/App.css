@@ -1,0 +1,5 @@
+/* App.css - Reset to minimal to let index.css handle everything */
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
