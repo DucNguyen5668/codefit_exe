@@ -1,41 +1,49 @@
-const nodemailer = require('nodemailer');
-
 const getAppBaseUrl = () => {
   return process.env.APP_BASE_URL || process.env.FRONTEND_URL || 'http://localhost:3000';
 };
 
-const hasSmtpConfig = () => {
-  return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS);
-};
-
-const createTransporter = () => {
-  if (!hasSmtpConfig()) return null;
-
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
-    },
-    connectionTimeout: 5000, // 5 giây giới hạn kết nối
-    greetingTimeout: 5000,   // 5 giây giới hạn chào hỏi SMTP
-    socketTimeout: 10000     // 10 giây giới hạn socket truyền dữ liệu
-  });
-};
-
 const sendMail = async ({ to, subject, html, text, fallbackLink }) => {
-  const transporter = createTransporter();
-
-  if (!transporter) {
-    console.log('SMTP is not configured. Email was not sent.');
+  const apiKey = process.env.RESEND_API_KEY || 're_Vy6Qm2mS_GtEAjSyNYcENFEY8eozvCc7C';
+  
+  if (!apiKey) {
+    console.log('Resend API key is not configured. Email was not sent.');
     console.log(subject + ' link:', fallbackLink);
     return { skipped: true, fallbackLink };
   }
 
-  const from = process.env.MAIL_FROM || process.env.SMTP_USER;
-  return transporter.sendMail({ from, to, subject, html, text });
+  // Nếu tên miền chưa được verify trên Resend, hãy tạm dùng 'onboarding@resend.dev'
+  // Sau khi verify tên miền nutricore.io.vn thành công, hãy đổi MAIL_FROM trên Render thành 'Nutricore Tây Nguyên <no-reply@nutricore.io.vn>'
+  const from = process.env.MAIL_FROM || 'onboarding@resend.dev';
+
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        from,
+        to,
+        subject,
+        html,
+        text
+      })
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      console.error('Resend API Error details:', data);
+      throw new Error(data.message || 'Failed to send email via Resend');
+    }
+
+    console.log('Email sent successfully via Resend API:', data);
+    return data;
+  } catch (error) {
+    console.error('Failed to send email via Resend API:', error);
+    throw error;
+  }
 };
 
 const sendVerificationEmail = async ({ to, name, token }) => {
