@@ -55,6 +55,7 @@ export default function AdminLayout({ children }) {
     { href: "/admin", icon: "fa-chart-pie", label: "Tổng quan", caption: "Doanh thu & vận hành", exact: true },
     { href: "/admin/orders", icon: "fa-file-invoice-dollar", label: "Đơn hàng", caption: "Xử lý giao dịch" },
     { href: "/admin/products", icon: "fa-boxes-stacked", label: "Sản phẩm", caption: "Kho hàng & giá bán" },
+    { href: "/admin/blogs", icon: "fa-newspaper", label: "Bài viết", caption: "Dinh dưỡng & Tin tức" },
     { href: "/admin/messages", icon: "fa-headset", label: "Hỗ trợ", caption: "Tin nhắn khách hàng" },
   ];
 
