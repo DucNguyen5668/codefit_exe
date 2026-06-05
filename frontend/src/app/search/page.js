@@ -127,18 +127,7 @@ function SearchContent() {
 
   return (
     <div>
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Tìm Kiếm Sản Phẩm</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Tìm kiếm</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-[1200px] mx-auto px-4 section-padding">
+<section className="max-w-[1200px] mx-auto px-4 section-padding">
         <div className="rounded-[2rem] bg-gradient-to-br from-[#45572f] via-[#5d713e] to-[#26351b] p-6 md:p-9 text-white shadow-2xl mb-8 relative overflow-hidden">
           <div className="absolute -right-16 -top-16 w-64 h-64 bg-[#f7ca3a]/20 rounded-full blur-3xl"></div>
           <div className="relative">

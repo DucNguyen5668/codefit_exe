@@ -2,8 +2,22 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import api from "@/lib/api";
+
+const SUGGESTED_QUESTIONS = [
+  { text: "Sản phẩm bán chạy?", query: "Những sản phẩm nào bán chạy nhất tại cửa hàng?" },
+  { text: "Thời gian giao hàng?", query: "Thời gian giao hàng mất bao lâu và phí ship thế nào?" },
+  { text: "Phương thức thanh toán?", query: "Cửa hàng có những phương thức thanh toán nào?" },
+  { text: "Tư vấn Eat Clean?", query: "Tư vấn cho tôi về chế độ ăn Eat Clean và sản phẩm phù hợp" }
+];
+
+const SUGGESTED_PAGES = [
+  { label: "Cửa hàng", path: "/products", icon: "fas fa-shopping-bag" },
+  { label: "Góc dinh dưỡng", path: "/nutrition", icon: "fas fa-leaf" },
+  { label: "Trợ giúp & Chat", path: "/customer-care", icon: "fas fa-headset" },
+  { label: "Lịch sử đơn hàng", path: "/order-history", icon: "fas fa-history" }
+];
 
 const createAiGreeting = (name) => ({
   _id: "ai_welcome",
@@ -28,6 +42,7 @@ const readAiMessages = () => {
 export default function ChatWidget() {
   const { user, isLoggedIn } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef(null);
 
@@ -192,6 +207,51 @@ export default function ChatWidget() {
     }
   };
 
+  const handleSendSuggested = async (queryText) => {
+    if (!queryText.trim() || loadingAI) return;
+    
+    const userMessage = {
+      _id: "user_" + Date.now(),
+      content: queryText,
+      sender: { role: "user" },
+      createdAt: new Date().toISOString()
+    };
+    const updatedMessages = [...aiMessages, userMessage];
+    setAiMessages(updatedMessages);
+    sessionStorage.setItem("nutricore_ai_chat_history", JSON.stringify(updatedMessages));
+
+    setLoadingAI(true);
+    try {
+      const apiMessages = updatedMessages.map(m => ({
+        role: m.sender.role === "ai" ? "assistant" : "user",
+        content: m.content
+      }));
+
+      const data = await api.post("/chatbot/chat", { messages: apiMessages });
+      const aiMessage = {
+        _id: "ai_" + Date.now(),
+        content: data.reply,
+        sender: { role: "ai" },
+        createdAt: new Date().toISOString()
+      };
+
+      const finalMessages = [...updatedMessages, aiMessage];
+      setAiMessages(finalMessages);
+      sessionStorage.setItem("nutricore_ai_chat_history", JSON.stringify(finalMessages));
+    } catch (err) {
+      console.error("AI Chat error:", err);
+      const errorMessage = {
+        _id: "ai_err_" + Date.now(),
+        content: "Rất tiếc, tôi đang gặp lỗi kết nối. Vui lòng thử lại sau giây lát!",
+        sender: { role: "ai" },
+        createdAt: new Date().toISOString()
+      };
+      setAiMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setLoadingAI(false);
+    }
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -322,6 +382,45 @@ export default function ChatWidget() {
             )}
             <div ref={messagesEndRef} />
           </div>
+
+          {/* Suggestions Bar */}
+          {!isCustomerCare && (
+            <div className="px-3 py-2 bg-gray-50 border-t border-gray-100 flex flex-col gap-1">
+              <span className="text-[10px] text-gray-400 font-semibold px-1 uppercase tracking-wider">Gợi ý cho bạn</span>
+              <div 
+                className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none"
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                {/* Suggested Pages */}
+                {SUGGESTED_PAGES.map((page, idx) => (
+                  <button
+                    key={`page-${idx}`}
+                    onClick={() => {
+                      setIsOpen(false);
+                      router.push(page.path);
+                    }}
+                    className="flex-shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-white border border-[#a66b2f]/30 text-[#a66b2f] hover:bg-[#a66b2f] hover:text-white transition-all font-semibold flex items-center gap-1 shadow-sm"
+                  >
+                    {page.icon && <i className={page.icon}></i>}
+                    {page.label}
+                  </button>
+                ))}
+                
+                {/* Suggested Questions */}
+                {SUGGESTED_QUESTIONS.map((q, idx) => (
+                  <button
+                    key={`q-${idx}`}
+                    onClick={() => handleSendSuggested(q.query)}
+                    className="flex-shrink-0 text-[11px] px-2.5 py-1 rounded-full bg-white border border-gray-200 text-gray-600 hover:border-[#a66b2f] hover:text-[#a66b2f] transition-all flex items-center gap-1 shadow-sm"
+                    disabled={loadingAI}
+                  >
+                    <i className="far fa-lightbulb text-[#cfa006]"></i>
+                    {q.text}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Input */}
           <div className="chat-widget-input">

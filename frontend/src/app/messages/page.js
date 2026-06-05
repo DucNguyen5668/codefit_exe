@@ -70,18 +70,7 @@ export default function MessagesPage() {
 
   return (
     <div>
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Tin Nhắn</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Tin nhắn</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-[800px] mx-auto px-4 section-padding">
+<section className="max-w-[800px] mx-auto px-4 section-padding">
         <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm" style={{ height: "600px", display: "flex", flexDirection: "column" }}>
           {/* Header */}
           <div className="bg-[#45572f] text-white px-6 py-4 flex items-center gap-3">

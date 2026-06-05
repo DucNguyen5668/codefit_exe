@@ -76,11 +76,7 @@ export default function Header() {
             {isLoggedIn ? (
               <div className="header-account-menu relative">
                 <button className="header-account-trigger flex items-center gap-2">
-                  {user?.avatar ? (
-                    <img src={user.avatar} alt="" className="w-6 h-6 rounded-full object-cover border border-white/30" />
-                  ) : (
-                    <i className="fas fa-user-circle"></i>
-                  )}
+                  <img src={user?.avatar || "/Avatar.png"} alt="" className="w-6 h-6 rounded-full object-cover border border-white/30" />
                   <span className="max-w-[120px] truncate">{user?.name || "Tài khoản"}</span>
                   <i className="fas fa-chevron-down text-[10px]"></i>
                 </button>
@@ -225,13 +221,7 @@ export default function Header() {
               {isLoggedIn && (
                 <div className="mobile-menu-user">
                   <div className="mobile-menu-user-info">
-                    {user?.avatar ? (
-                      <img src={user.avatar} alt="" className="w-10 h-10 rounded-full object-cover border-2 border-[#45572f]/20" />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-[#45572f]/10 flex items-center justify-center">
-                        <i className="fas fa-user text-[#45572f]"></i>
-                      </div>
-                    )}
+                    <img src={user?.avatar || "/Avatar.png"} alt="" className="w-10 h-10 rounded-full object-cover border-2 border-[#45572f]/20" />
                     <div>
                       <p className="font-semibold text-gray-800 text-sm">{user?.name}</p>
                       <p className="text-xs text-gray-500">{user?.email}</p>

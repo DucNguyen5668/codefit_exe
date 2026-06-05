@@ -28,21 +28,7 @@ export default function NutritionDetail({ params }) {
 
   return (
     <div>
-      {/* Breadcrumbs Banner */}
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title text-xl md:text-2xl line-clamp-1">{article.title}</h1>
-          <div className="breadcrumbs text-xs md:text-sm">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right"></i>
-            <Link href="/nutrition">Dinh dưỡng</Link>
-            <i className="fas fa-chevron-right"></i>
-            <span>Bài viết</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Blog Content */}
+{/* Main Blog Content */}
       <article className="max-w-[900px] mx-auto px-4 pb-16">
         <header className="article-header">
           <span className="article-category">{article.category}</span>

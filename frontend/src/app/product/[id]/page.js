@@ -96,20 +96,7 @@ export default function ProductDetail({ params }) {
 
   return (
     <div>
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title text-xl md:text-2xl">{product.name}</h1>
-          <div className="breadcrumbs text-xs md:text-sm">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right"></i>
-            <Link href="/products">Sản phẩm</Link>
-            <i className="fas fa-chevron-right"></i>
-            <span>Chi tiết</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-[1200px] mx-auto px-4 pb-16">
+<section className="max-w-[1200px] mx-auto px-4 pb-16">
         <div className="detail-layout">
           <div className="detail-gallery flex items-center justify-center">
             <img src={product.image} alt={product.name} className="w-full h-full object-cover" />

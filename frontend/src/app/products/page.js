@@ -97,18 +97,7 @@ export default function ProductsCatalog() {
 
   return (
     <div>
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Danh Mục Sản Phẩm</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Sản phẩm</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-[1200px] mx-auto px-4 section-padding">
+<section className="max-w-[1200px] mx-auto px-4 section-padding">
         {/* Mobile Filter Toggle */}
         <button
           className="mobile-filter-toggle md:hidden"

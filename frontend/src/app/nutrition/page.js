@@ -4,19 +4,7 @@ import { articles } from "@/data/mockData";
 export default function NutritionOverview() {
   return (
     <div>
-      {/* Page Banner */}
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Góc Dinh Dưỡng</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Dinh dưỡng</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Articles Grid Container */}
+{/* Articles Grid Container */}
       <section className="max-w-[1200px] mx-auto px-4 section-padding">
         <div className="mb-10 text-center max-w-2xl mx-auto">
           <span className="text-[#cfa006] uppercase tracking-wider font-bold text-xs">BLOG & KIẾN THỨC</span>

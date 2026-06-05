@@ -48,19 +48,7 @@ export default function CustomerCarePage() {
 
   return (
     <div>
-      {/* Page Banner Banner */}
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Chăm Sóc Khách Hàng</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Chăm sóc khách hàng</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Grid */}
+{/* Main Grid */}
       <section className="max-w-[1200px] mx-auto px-4 section-padding">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           

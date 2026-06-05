@@ -174,21 +174,7 @@ export default function CheckoutPage() {
 
   return (
     <div>
-      {/* Page Banner */}
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Thanh Toán</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <Link href="/cart">Giỏ hàng</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Thanh toán</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Checkout Grid */}
+{/* Checkout Grid */}
       <section className="max-w-[1200px] mx-auto px-4 section-padding">
         <form onSubmit={handlePlaceOrder} className="checkout-grid">
           {/* Column 1: Billing & Delivery form */}

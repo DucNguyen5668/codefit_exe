@@ -37,18 +37,7 @@ function PaymentResultContent() {
 
   return (
     <div>
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Kết Quả Thanh Toán</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Kết quả thanh toán</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-[600px] mx-auto px-4 section-padding">
+<section className="max-w-[600px] mx-auto px-4 section-padding">
         {loading ? (
           <div className="text-center py-20">
             <i className="fas fa-spinner fa-spin text-4xl text-[#45572f] mb-4"></i>

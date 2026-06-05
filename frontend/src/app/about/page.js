@@ -3,19 +3,7 @@ import Link from "next/link";
 export default function AboutUsPage() {
   return (
     <div>
-      {/* Page Banner Banner */}
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Về Chúng Tôi</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Về chúng tôi</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content */}
+{/* Main Content */}
       <section className="max-w-[1200px] mx-auto px-4 section-padding">
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           {/* Info Text */}

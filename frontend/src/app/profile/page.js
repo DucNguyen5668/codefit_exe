@@ -124,27 +124,12 @@ export default function ProfilePage() {
 
   return (
     <div>
-      {/* Banner */}
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Tài Khoản Của Tôi</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Tài khoản</span>
-          </div>
-        </div>
-      </section>
 
       <section className="max-w-[700px] mx-auto px-4 section-padding">
         {/* User Avatar & Role Badge */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-full mx-auto mb-4 bg-[#45572f] flex items-center justify-center text-white text-3xl overflow-hidden">
-            {user.avatar ? (
-              <img src={user.avatar} alt="" className="w-full h-full object-cover" />
-            ) : (
-              <i className="fas fa-user"></i>
-            )}
+          <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden">
+            <img src={user.avatar || "/Avatar.png"} alt="" className="w-full h-full object-cover" />
           </div>
           <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
           <p className="text-sm text-gray-500">{user.email}</p>

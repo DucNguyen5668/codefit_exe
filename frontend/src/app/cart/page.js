@@ -113,19 +113,7 @@ export default function ShoppingCart() {
 
   return (
     <div>
-      {/* Page Banner Banner */}
-      <section className="page-banner">
-        <div className="max-w-[1200px] mx-auto px-4 banner-inner">
-          <h1 className="banner-title">Giỏ Hàng</h1>
-          <div className="breadcrumbs">
-            <Link href="/">Trang chủ</Link>
-            <i className="fas fa-chevron-right text-xs"></i>
-            <span>Giỏ hàng</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Cart Grid */}
+{/* Cart Grid */}
       <section className="max-w-[1200px] mx-auto px-4 section-padding">
         {!mounted ? (
           <div className="flex justify-center py-20">
