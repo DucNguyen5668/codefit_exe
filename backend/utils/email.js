@@ -18,7 +18,10 @@ const createTransporter = () => {
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS
-    }
+    },
+    connectionTimeout: 5000, // 5 giây giới hạn kết nối
+    greetingTimeout: 5000,   // 5 giây giới hạn chào hỏi SMTP
+    socketTimeout: 10000     // 10 giây giới hạn socket truyền dữ liệu
   });
 };
 
