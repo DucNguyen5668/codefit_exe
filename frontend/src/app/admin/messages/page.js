@@ -82,6 +82,18 @@ export default function AdminMessagesPage() {
     }
   };
 
+  const handleDeleteConversation = async (convId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa cuộc trò chuyện này và toàn bộ tin nhắn liên quan? Hành động này không thể hoàn tác.")) return;
+    try {
+      await api.delete(`/messages/${convId}`);
+      setActiveConv(null);
+      setMessages([]);
+      fetchConversations();
+    } catch (err) {
+      console.error("Delete conversation error:", err);
+    }
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold font-montserrat text-gray-900 mb-8">
@@ -134,14 +146,23 @@ export default function AdminMessagesPage() {
             {activeConv ? (
               <>
                 {/* Chat Header */}
-                <div className="px-6 py-3 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#45572f] text-white flex items-center justify-center font-bold text-xs">
-                    {activeConv.customer?.name?.charAt(0) || "K"}
+                <div className="px-6 py-3 border-b border-gray-100 bg-gray-50 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[#45572f] text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                      {activeConv.customer?.name?.charAt(0) || "K"}
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm text-gray-900">{activeConv.customer?.name}</p>
+                      <p className="text-xs text-gray-500">{activeConv.customer?.email}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-bold text-sm">{activeConv.customer?.name}</p>
-                    <p className="text-xs text-gray-500">{activeConv.customer?.email}</p>
-                  </div>
+                  <button 
+                    onClick={() => handleDeleteConversation(activeConv._id)}
+                    className="w-9 h-9 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center border border-red-100 flex-shrink-0"
+                    title="Xóa cuộc trò chuyện"
+                  >
+                    <i className="far fa-trash-alt"></i>
+                  </button>
                 </div>
 
                 {/* Messages */}

@@ -152,4 +152,27 @@ router.get('/unread/count', auth, async (req, res) => {
   }
 });
 
+// DELETE /api/messages/:conversationId - Admin: Delete a conversation and all its messages
+router.delete('/:conversationId', auth, adminOnly, async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    const conversation = await Conversation.findById(conversationId);
+    
+    if (!conversation) {
+      return res.status(404).json({ message: 'Không tìm thấy cuộc trò chuyện' });
+    }
+
+    // Delete all messages in the conversation
+    await Message.deleteMany({ conversation: conversationId });
+    
+    // Delete the conversation document itself
+    await Conversation.findByIdAndDelete(conversationId);
+
+    res.json({ message: 'Đã xóa cuộc trò chuyện' });
+  } catch (error) {
+    console.error('Delete conversation error:', error);
+    res.status(500).json({ message: 'Lỗi server khi xóa cuộc trò chuyện' });
+  }
+});
+
 module.exports = router;

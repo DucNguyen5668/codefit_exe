@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     enum: ['customer', 'admin'],
     default: 'customer'
   },
+  isBanned: {
+    type: Boolean,
+    default: false
+  },
   googleId: {
     type: String,
     default: null

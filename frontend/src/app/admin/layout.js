@@ -57,6 +57,7 @@ export default function AdminLayout({ children }) {
     { href: "/admin/products", icon: "fa-boxes-stacked", label: "Sản phẩm", caption: "Kho hàng & giá bán" },
     { href: "/admin/blogs", icon: "fa-newspaper", label: "Bài viết", caption: "Dinh dưỡng & Tin tức" },
     { href: "/admin/messages", icon: "fa-headset", label: "Hỗ trợ", caption: "Tin nhắn khách hàng" },
+    { href: "/admin/users", icon: "fa-users", label: "Khách hàng", caption: "Thành viên & Quyền hạn" },
   ];
 
   const isActive = (href, exact) => exact ? pathname === href : pathname.startsWith(href);

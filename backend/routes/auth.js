@@ -90,6 +90,10 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Email hoặc mật khẩu không đúng' });
     }
 
+    if (user.isBanned) {
+      return res.status(403).json({ message: 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.' });
+    }
+
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Email hoặc mật khẩu không đúng' });
@@ -252,6 +256,10 @@ router.post('/google', async (req, res) => {
     }
 
     let user = await User.findOne({ email });
+
+    if (user && user.isBanned) {
+      return res.status(403).json({ message: 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.' });
+    }
 
     if (user) {
       user.googleId = user.googleId || uid;
