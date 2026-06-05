@@ -1,3 +1,8 @@
+// Fix: Override DNS servers so Node.js SRV lookups (used by mongodb+srv://) work correctly.
+// The default system DNS (IPv6 link-local fe80::1) refuses SRV queries, causing ECONNREFUSED.
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -79,11 +84,39 @@ async function startServer() {
       console.log('Server running on port ' + PORT);
       console.log('Socket.io ready');
     });
+
+    // Handle port already in use
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${PORT} is already in use. Retrying in 1s...`);
+        setTimeout(() => {
+          server.close();
+          server.listen(PORT);
+        }, 1000);
+      } else {
+        throw err;
+      }
+    });
   } catch (err) {
     console.error('MongoDB connection error:', err.message);
     process.exit(1);
   }
 }
+
+// Graceful shutdown so node --watch can release the port cleanly on restart
+function gracefulShutdown(signal) {
+  console.log(`\n${signal} received. Closing server...`);
+  server.closeAllConnections?.();
+  server.close(() => {
+    mongoose.connection.close(false).then(() => {
+      console.log('Server and MongoDB closed.');
+      process.exit(0);
+    });
+  });
+}
+
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 
 if (require.main === module) {
   startServer();

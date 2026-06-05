@@ -62,6 +62,8 @@ export default function ChatWidget() {
   useEffect(() => {
     if (!isLoggedIn || user?.role === "admin" || !isCustomerCare) return;
 
+    const controller = new AbortController();
+
     const checkUnread = async () => {
       try {
         const data = await api.get("/messages/unread/count");
@@ -73,7 +75,10 @@ export default function ChatWidget() {
 
     checkUnread();
     const interval = setInterval(checkUnread, 15000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      controller.abort();
+    };
   }, [isLoggedIn, user, isCustomerCare]);
 
   // Load admin conversation when opened in customer care

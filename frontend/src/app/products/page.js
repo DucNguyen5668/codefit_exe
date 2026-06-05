@@ -39,6 +39,7 @@ export default function ProductsCatalog() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
 
   // Reset page to 1 when filters change
   useEffect(() => {
@@ -108,8 +109,16 @@ export default function ProductsCatalog() {
       </section>
 
       <section className="max-w-[1200px] mx-auto px-4 section-padding">
+        {/* Mobile Filter Toggle */}
+        <button
+          className="mobile-filter-toggle md:hidden"
+          onClick={() => setShowMobileFilter(!showMobileFilter)}
+        >
+          <i className={`fas ${showMobileFilter ? 'fa-times' : 'fa-sliders-h'}`}></i>
+          {showMobileFilter ? 'Đóng bộ lọc' : 'Bộ lọc & Tìm kiếm'}
+        </button>
         <div className="catalog-layout">
-          <aside className="sidebar">
+          <aside className={`sidebar ${showMobileFilter ? 'mobile-visible' : ''}`}>
             <h3 className="sidebar-title">Tìm kiếm & lọc</h3>
 
             <div className="filter-group">
@@ -158,8 +167,11 @@ export default function ProductsCatalog() {
                 {sortOptions.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
               </select>
 
-              <button onClick={resetFilters} className="w-full rounded-xl border border-gray-200 py-2 text-sm font-bold text-gray-600 hover:bg-gray-50">
+              <button onClick={() => { resetFilters(); }} className="w-full rounded-xl border border-gray-200 py-2 text-sm font-bold text-gray-600 hover:bg-gray-50">
                 <i className="fas fa-rotate-left mr-2"></i>Xóa bộ lọc
+              </button>
+              <button onClick={() => setShowMobileFilter(false)} className="w-full rounded-xl bg-[#45572f] text-white py-2.5 text-sm font-bold mt-2 md:hidden">
+                <i className="fas fa-check mr-2"></i>Áp dụng
               </button>
             </div>
 

@@ -24,7 +24,7 @@ export default function Header() {
   const { user, isLoggedIn, isAdmin, logout } = useAuth();
   const [cartCount, setCartCount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -45,20 +45,12 @@ export default function Header() {
     };
   }, [updateCartCount]);
 
-  // Close user menu when clicking outside
-  useEffect(() => {
-    const handleClick = () => setShowUserMenu(false);
-    if (showUserMenu) {
-      document.addEventListener("click", handleClick);
-      return () => document.removeEventListener("click", handleClick);
-    }
-  }, [showUserMenu]);
+
 
   const isActive = (path) => pathname === path;
 
   const handleLogout = () => {
     logout();
-    setShowUserMenu(false);
     router.push("/");
   };
 
@@ -82,11 +74,8 @@ export default function Header() {
           <div className="top-right">
 
             {isLoggedIn ? (
-              <div className="header-account-menu relative" onClick={(e) => e.stopPropagation()}>
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-2 hover:text-[#f7ca3a] transition-colors"
-                >
+              <div className="header-account-menu relative">
+                <button className="header-account-trigger flex items-center gap-2">
                   {user?.avatar ? (
                     <img src={user.avatar} alt="" className="w-6 h-6 rounded-full object-cover border border-white/30" />
                   ) : (
@@ -96,32 +85,32 @@ export default function Header() {
                   <i className="fas fa-chevron-down text-[10px]"></i>
                 </button>
 
-                {showUserMenu && (
-                  <div className="fixed right-6 top-12 bg-white rounded-2xl shadow-2xl border border-gray-100 py-2 min-w-[220px] z-[9999] animate-fadeIn overflow-hidden">
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="font-semibold text-gray-800 text-sm">{user?.name}</p>
-                      <p className="text-xs text-gray-500">{user?.email}</p>
-                    </div>
-                    <Link href="/profile" className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setShowUserMenu(false)}>
-                      <i className="fas fa-user-edit text-[#45572f]"></i> Tài khoản của tôi
+                {/* Hover dropdown */}
+                <div className="header-account-dropdown">
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="font-semibold text-gray-800 text-sm">{user?.name}</p>
+                    <p className="text-xs text-gray-500">{user?.email}</p>
+                  </div>
+                  <Link href="/profile" className="header-dropdown-link">
+                    <i className="fas fa-user-edit"></i> Tài khoản của tôi
+                  </Link>
+                  <Link href="/order-history" className="header-dropdown-link">
+                    <i className="fas fa-box"></i> Đơn hàng của tôi
+                  </Link>
+                  <Link href="/messages" className="header-dropdown-link">
+                    <i className="fas fa-comments"></i> Tin nhắn
+                  </Link>
+                  {isAdmin && (
+                    <Link href="/admin" className="header-dropdown-link">
+                      <i className="fas fa-cog"></i> Quản trị Admin
                     </Link>
-                    <Link href="/order-history" className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setShowUserMenu(false)}>
-                      <i className="fas fa-box text-[#45572f]"></i> Đơn hàng của tôi
-                    </Link>
-                    <Link href="/messages" className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setShowUserMenu(false)}>
-                      <i className="fas fa-comments text-[#45572f]"></i> Tin nhắn
-                    </Link>
-                    {isAdmin && (
-                      <Link href="/admin" className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setShowUserMenu(false)}>
-                        <i className="fas fa-cog text-[#cfa006]"></i> Quản trị Admin
-                      </Link>
-                    )}
-                    <hr className="my-1 border-gray-100" />
-                    <button onClick={handleLogout} className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 w-full text-left">
+                  )}
+                  <div className="px-3 py-2 mt-1 border-t border-gray-100">
+                    <button onClick={handleLogout} className="header-logout-btn w-full flex items-center justify-center gap-2">
                       <i className="fas fa-sign-out-alt"></i> Đăng xuất
                     </button>
                   </div>
-                )}
+                </div>
               </div>
             ) : (
               <Link href="/login">
@@ -166,12 +155,12 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="logo z-10 flex justify-center w-full md:w-2/12 py-1 md:py-0">
+          <div className="logo z-10 flex justify-center w-auto md:w-2/12 py-1 md:py-0">
             <Link href="/" className="outline-none flex justify-center items-center">
               <img 
                 src="/Logo.png" 
                 alt="Nutricore Tây Nguyên Logo" 
-                className="w-[120px] h-[120px] object-contain hover:scale-105 transition-transform" 
+                className="w-[80px] h-[80px] md:w-[120px] md:h-[120px] object-contain hover:scale-105 transition-transform" 
               />
             </Link>
           </div>
@@ -189,23 +178,90 @@ export default function Header() {
           <div className="w-8 md:hidden"></div>
         </div>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile Dropdown - Full screen overlay */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-100 py-4 px-6 flex flex-col space-y-4 shadow-inner animate-fadeIn">
-            <form onSubmit={handleSearchSubmit} className="relative">
-              <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-[#45572f]"></i>
-              <input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm sản phẩm..."
-                className="w-full rounded-full border border-gray-200 py-3 pl-11 pr-4 text-sm outline-none focus:border-[#45572f]"
-              />
-            </form>
-            <Link href="/" className={`font-semibold text-sm uppercase ${isActive("/") ? "text-[#45572f]" : "text-gray-700"}`} onClick={() => setIsMobileMenuOpen(false)}>Trang chủ</Link>
-            <Link href="/products" className={`font-semibold text-sm uppercase ${isActive("/products") ? "text-[#45572f]" : "text-gray-700"}`} onClick={() => setIsMobileMenuOpen(false)}>Sản phẩm</Link>
-            <Link href="/nutrition" className={`font-semibold text-sm uppercase ${isActive("/nutrition") ? "text-[#45572f]" : "text-gray-700"}`} onClick={() => setIsMobileMenuOpen(false)}>Dinh dưỡng</Link>
-            <Link href="/about" className={`font-semibold text-sm uppercase ${isActive("/about") ? "text-[#45572f]" : "text-gray-700"}`} onClick={() => setIsMobileMenuOpen(false)}>Về chúng tôi</Link>
-            <Link href="/customer-care" className={`font-semibold text-sm uppercase ${isActive("/customer-care") ? "text-[#45572f]" : "text-gray-700"}`} onClick={() => setIsMobileMenuOpen(false)}>Chăm sóc khách hàng</Link>
+          <div className="mobile-menu-overlay md:hidden">
+            <div className="mobile-menu-content">
+              {/* Close button */}
+              <button 
+                className="self-end text-2xl text-gray-500 hover:text-[#45572f] mb-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <i className="fas fa-times"></i>
+              </button>
+
+              {/* Search */}
+              <form onSubmit={handleSearchSubmit} className="relative w-full">
+                <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-[#45572f]"></i>
+                <input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Tìm sản phẩm..."
+                  className="w-full rounded-full border border-gray-200 py-3 pl-11 pr-4 text-sm outline-none focus:border-[#45572f]"
+                />
+              </form>
+
+              {/* Nav Links */}
+              <div className="mobile-menu-links">
+                <Link href="/" className={`mobile-menu-link ${isActive("/") ? "active" : ""}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <i className="fas fa-home"></i> Trang chủ
+                </Link>
+                <Link href="/products" className={`mobile-menu-link ${isActive("/products") ? "active" : ""}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <i className="fas fa-box-open"></i> Sản phẩm
+                </Link>
+                <Link href="/nutrition" className={`mobile-menu-link ${isActive("/nutrition") ? "active" : ""}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <i className="fas fa-seedling"></i> Dinh dưỡng
+                </Link>
+                <Link href="/about" className={`mobile-menu-link ${isActive("/about") ? "active" : ""}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <i className="fas fa-info-circle"></i> Về chúng tôi
+                </Link>
+                <Link href="/customer-care" className={`mobile-menu-link ${isActive("/customer-care") ? "active" : ""}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  <i className="fas fa-headset"></i> Chăm sóc khách hàng
+                </Link>
+              </div>
+
+              {/* User section for mobile */}
+              {isLoggedIn && (
+                <div className="mobile-menu-user">
+                  <div className="mobile-menu-user-info">
+                    {user?.avatar ? (
+                      <img src={user.avatar} alt="" className="w-10 h-10 rounded-full object-cover border-2 border-[#45572f]/20" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-[#45572f]/10 flex items-center justify-center">
+                        <i className="fas fa-user text-[#45572f]"></i>
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-semibold text-gray-800 text-sm">{user?.name}</p>
+                      <p className="text-xs text-gray-500">{user?.email}</p>
+                    </div>
+                  </div>
+                  <div className="mobile-menu-user-links">
+                    <Link href="/profile" className="mobile-menu-user-link" onClick={() => setIsMobileMenuOpen(false)}>
+                      <i className="fas fa-user-edit"></i> Tài khoản
+                    </Link>
+                    <Link href="/order-history" className="mobile-menu-user-link" onClick={() => setIsMobileMenuOpen(false)}>
+                      <i className="fas fa-box"></i> Đơn hàng
+                    </Link>
+                    <Link href="/messages" className="mobile-menu-user-link" onClick={() => setIsMobileMenuOpen(false)}>
+                      <i className="fas fa-comments"></i> Tin nhắn
+                    </Link>
+                    {isAdmin && (
+                      <Link href="/admin" className="mobile-menu-user-link" onClick={() => setIsMobileMenuOpen(false)}>
+                        <i className="fas fa-cog text-[#cfa006]"></i> Admin
+                      </Link>
+                    )}
+                  </div>
+                  <button 
+                    onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }} 
+                    className="mobile-menu-logout"
+                  >
+                    <i className="fas fa-sign-out-alt"></i> Đăng xuất
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </nav>
