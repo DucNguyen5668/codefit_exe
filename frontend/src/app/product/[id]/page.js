@@ -118,13 +118,21 @@ export default function ProductDetail({ params }) {
             </div>
 
             <div className="detail-actions mt-6 flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-              <div className="qty-selector flex items-center justify-between border border-gray-300 rounded-full w-full sm:w-[140px] h-12 overflow-hidden bg-white">
-                <button onClick={handleDecrease} className="qty-btn px-4 text-lg font-bold text-gray-600 hover:bg-gray-100 w-12 h-full flex items-center justify-center"><i className="fas fa-minus text-xs"></i></button>
-                <input type="text" value={quantity} readOnly className="qty-input w-10 text-center font-bold text-gray-800 border-none outline-none text-base" />
-                <button onClick={handleIncrease} className="qty-btn px-4 text-lg font-bold text-gray-600 hover:bg-gray-100 w-12 h-full flex items-center justify-center"><i className="fas fa-plus text-xs"></i></button>
-              </div>
-              <button onClick={() => handleAddToCart(false)} className="btn btn-secondary flex-1 h-12 rounded-full font-bold transition-all flex items-center justify-center gap-2 hover:bg-[#b7c4a7]"><i className="fas fa-cart-plus"></i> THÊM VÀO GIỎ</button>
-              <button onClick={() => handleAddToCart(true)} className="btn btn-primary flex-1 h-12 rounded-full font-bold transition-all flex items-center justify-center gap-2 hover:bg-[#607a44]"><i className="fas fa-shopping-bag"></i> MUA NGAY</button>
+              {product.stockQty > 0 ? (
+                <>
+                  <div className="qty-selector flex items-center justify-between border border-gray-300 rounded-full w-full sm:w-[140px] h-12 overflow-hidden bg-white">
+                    <button onClick={handleDecrease} className="qty-btn px-4 text-lg font-bold text-gray-600 hover:bg-gray-100 w-12 h-full flex items-center justify-center"><i className="fas fa-minus text-xs"></i></button>
+                    <input type="text" value={quantity} readOnly className="qty-input w-10 text-center font-bold text-gray-800 border-none outline-none text-base" />
+                    <button onClick={handleIncrease} className="qty-btn px-4 text-lg font-bold text-gray-600 hover:bg-gray-100 w-12 h-full flex items-center justify-center"><i className="fas fa-plus text-xs"></i></button>
+                  </div>
+                  <button onClick={() => handleAddToCart(false)} className="btn btn-secondary flex-1 h-12 rounded-full font-bold transition-all flex items-center justify-center gap-2 hover:bg-[#b7c4a7] cursor-pointer"><i className="fas fa-cart-plus"></i> THÊM VÀO GIỎ</button>
+                  <button onClick={() => handleAddToCart(true)} className="btn btn-primary flex-1 h-12 rounded-full font-bold transition-all flex items-center justify-center gap-2 hover:bg-[#607a44] cursor-pointer"><i className="fas fa-shopping-bag"></i> MUA NGAY</button>
+                </>
+              ) : (
+                <button disabled className="w-full bg-gray-200 border border-gray-300 text-gray-500 font-extrabold h-12 rounded-full flex items-center justify-center gap-2 cursor-not-allowed">
+                  <i className="fas fa-ban"></i> SẢN PHẨM HẾT HÀNG (SOLD OUT)
+                </button>
+              )}
             </div>
 
             {addedMessage && (
@@ -171,19 +179,31 @@ export default function ProductDetail({ params }) {
           <div className="mt-16">
             <h3 className="text-xl font-bold font-montserrat text-gray-900 border-b border-gray-100 pb-4 mb-6">Sản Phẩm Liên Quan</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {relatedProducts.map((p) => (
-                <Link href={`/product/${p.slug}`} key={p._id} className="product-card group">
-                  <div className="product-img-wrapper relative">
-                    <span className="product-badge">GIẢM 50%</span>
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
-                  </div>
+              {relatedProducts.map((p) => {
+                const isSoldOut = p.stockQty <= 0;
+                return (
+                  <Link href={`/product/${p.slug}`} key={p._id} className="product-card group relative">
+                    <div className="product-img-wrapper relative">
+                      {isSoldOut ? (
+                        <span className="product-badge !bg-red-600 text-white font-bold">HẾT HÀNG</span>
+                      ) : (
+                        <span className="product-badge">GIẢM 50%</span>
+                      )}
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                      {isSoldOut && (
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 transition-all">
+                          <span className="bg-black/70 text-white text-xs font-black uppercase tracking-wider px-3.5 py-2 rounded-xl">SOLD OUT</span>
+                        </div>
+                      )}
+                    </div>
                   <h3 className="product-name text-gray-800 text-sm font-semibold line-clamp-1 mt-2 text-center group-hover:text-[#45572f] transition-colors">{p.name}</h3>
                   <div className="product-price mt-2">
                     <span className="current-price text-base font-bold text-gray-900">{p.price.toLocaleString("vi-VN")} đ</span>
                     <span className="old-price text-xs text-gray-400 line-through">{p.oldPrice.toLocaleString("vi-VN")} đ</span>
                   </div>
                 </Link>
-              ))}
+              );
+            })}
             </div>
           </div>
         )}

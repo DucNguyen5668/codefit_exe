@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import api from "@/lib/api";
 
 export default function AdminLayout({ children }) {
   const { user, isAdmin, loading } = useAuth();
@@ -11,6 +12,9 @@ export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
+  const [pendingOrders, setPendingOrders] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !isAdmin) {
@@ -32,6 +36,33 @@ export default function AdminLayout({ children }) {
     const timer = setInterval(updateTime, 30000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const fetchIndicators = async () => {
+      try {
+        const orderData = await api.get("/orders/all?status=pending");
+        setPendingOrders(orderData.orders || []);
+        
+        const msgData = await api.get("/messages/unread/count");
+        setUnreadCount(msgData.unreadCount || 0);
+      } catch (err) {
+        console.error("Failed to fetch indicators:", err);
+      }
+    };
+
+    fetchIndicators();
+    const interval = setInterval(fetchIndicators, 15000);
+    return () => clearInterval(interval);
+  }, [isAdmin]);
+
+  useEffect(() => {
+    if (!notifDropdownOpen) return;
+    const handleClose = () => setNotifDropdownOpen(false);
+    document.addEventListener("click", handleClose);
+    return () => document.removeEventListener("click", handleClose);
+  }, [notifDropdownOpen]);
 
   if (loading) {
     return (
@@ -120,10 +151,15 @@ export default function AdminLayout({ children }) {
                   <div className={`w-11 h-11 rounded-2xl flex items-center justify-center ${active ? "bg-[#183b20] text-[#d8892b]" : "bg-white/8 text-[#f0c282] group-hover:bg-white/14"}`}>
                     <i className={`fas ${item.icon}`}></i>
                   </div>
-                  <div>
-                    <p className="font-bold text-sm">{item.label}</p>
-                    <p className={`text-[11px] ${active ? "text-[#62704e]" : "text-white/38"}`}>{item.caption}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-sm truncate">{item.label}</p>
+                    <p className={`text-[11px] truncate ${active ? "text-[#62704e]" : "text-white/38"}`}>{item.caption}</p>
                   </div>
+                  {item.href === "/admin/messages" && unreadCount > 0 && (
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 bg-red-500 text-white text-[10px] font-black w-5.5 h-5.5 rounded-full shadow-md flex items-center justify-center animate-pulse">
+                      {unreadCount}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -159,9 +195,68 @@ export default function AdminLayout({ children }) {
                 <p className="text-xs text-[#7b6c55]">Cập nhật</p>
                 <p className="text-sm font-bold text-[#183b20]">{currentTime}</p>
               </div>
-              <button className="w-11 h-11 rounded-2xl bg-white border border-[#eadfce] text-[#183b20] hover:text-[#d8892b] shadow-sm transition-colors">
-                <i className="far fa-bell"></i>
-              </button>
+              <div className="relative" onClick={(e) => e.stopPropagation()}>
+                <button 
+                  onClick={() => setNotifDropdownOpen(!notifDropdownOpen)}
+                  className="w-11 h-11 rounded-2xl bg-white border border-[#eadfce] text-[#183b20] hover:text-[#d8892b] shadow-sm transition-colors relative flex items-center justify-center cursor-pointer"
+                  title="Thông báo đơn hàng mới"
+                >
+                  <i className="far fa-bell text-lg"></i>
+                  {pendingOrders.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center shadow animate-bounce">
+                      {pendingOrders.length}
+                    </span>
+                  )}
+                </button>
+
+                {/* Dropdown Menu */}
+                {notifDropdownOpen && (
+                  <div className="absolute right-0 mt-3 w-80 bg-white border border-[#eadfce] rounded-3xl shadow-xl z-50 overflow-hidden animate-fadeIn text-left">
+                    <div className="px-5 py-4 border-b border-[#eadfce] bg-[#fdfaf5] flex justify-between items-center">
+                      <span className="font-bold text-sm text-[#183b20]">Đơn hàng mới chờ duyệt</span>
+                      <span className="px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800 text-[10px] font-black">{pendingOrders.length} mới</span>
+                    </div>
+                    <div className="max-h-[320px] overflow-y-auto divide-y divide-gray-100">
+                      {pendingOrders.length === 0 ? (
+                        <div className="px-5 py-8 text-center text-gray-400 text-xs flex flex-col items-center gap-2">
+                          <i className="fas fa-box-open text-2xl text-gray-300"></i>
+                          <span>Không có đơn hàng mới nào chờ xác nhận</span>
+                        </div>
+                      ) : (
+                        pendingOrders.map((order) => (
+                          <Link
+                            key={order._id}
+                            href={`/admin/orders?code=${order.orderCode}`}
+                            onClick={() => setNotifDropdownOpen(false)}
+                            className="block px-5 py-3.5 hover:bg-gray-50 transition-colors"
+                          >
+                            <div className="flex justify-between items-start mb-1">
+                              <span className="font-bold text-xs text-[#183b20]">#{order.orderCode}</span>
+                              <span className="text-[10px] text-gray-400">{new Date(order.createdAt).toLocaleDateString("vi-VN")}</span>
+                            </div>
+                            <p className="text-xs font-semibold text-gray-700 truncate">{order.shippingInfo?.fullName}</p>
+                            <div className="flex justify-between items-center mt-1">
+                              <span className="text-[11px] text-[#b96d1e] font-black">{order.total?.toLocaleString("vi-VN")} đ</span>
+                              <span className="text-[10px] bg-yellow-50 text-yellow-700 font-bold px-1.5 py-0.5 rounded border border-yellow-200">Chờ duyệt</span>
+                            </div>
+                          </Link>
+                        ))
+                      )}
+                    </div>
+                    {pendingOrders.length > 0 && (
+                      <div className="px-4 py-2.5 border-t border-[#eadfce] bg-gray-50 text-center">
+                        <Link 
+                          href="/admin/orders" 
+                          onClick={() => setNotifDropdownOpen(false)}
+                          className="text-[11px] font-bold text-[#183b20] hover:text-[#d8892b] transition-colors"
+                        >
+                          Xem tất cả đơn hàng
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
               <Link href="/" className="hidden sm:flex items-center gap-2 rounded-2xl bg-[#183b20] px-4 py-3 text-sm font-bold text-white hover:bg-[#244d2d] shadow-lg shadow-[#183b20]/15 transition-all">
                 <i className="fas fa-shop"></i>
                 Cửa hàng

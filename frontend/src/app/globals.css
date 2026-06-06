@@ -437,6 +437,10 @@ body {
     gap: 30px;
 }
 
+.homepage-offers-grid > :nth-child(4) {
+    display: none !important;
+}
+
 .product-grid-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -1591,6 +1595,9 @@ body {
 @media (max-width: 1024px) {
     .product-grid-3 {
         grid-template-columns: repeat(2, 1fr);
+    }
+    .homepage-offers-grid > :nth-child(4) {
+        display: flex !important;
     }
     .product-grid-4 {
         grid-template-columns: repeat(3, 1fr);

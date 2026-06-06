@@ -65,33 +65,45 @@ export default function Home() {
             <i className="fas fa-spinner fa-spin text-4xl text-[#45572f]"></i>
           </div>
         ) : (
-          <div className="product-grid-3">
-            {products.slice(0, 3).map((product) => (
-              <Link href={`/product/${product.slug}`} key={product._id} className="product-card group">
-                <div className="product-img-wrapper relative">
-                  <span className="product-badge">GIẢM 50%</span>
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="product-name text-gray-800 line-clamp-2 min-h-[54px] flex items-center justify-center font-semibold text-center mt-2 group-hover:text-[#45572f] transition-colors">
-                  {product.name}
-                </h3>
-                <div className="product-price mt-4">
-                  <span className="current-price text-lg font-bold text-gray-900">
-                    Giá: {product.price.toLocaleString("vi-VN")} đ
-                  </span>
-                  <span className="old-price text-sm text-gray-400 line-through">
-                    {product.oldPrice.toLocaleString("vi-VN")} đ
-                  </span>
-                </div>
-                <div className="mt-4 pt-2 border-t border-gray-100 text-center text-xs font-bold text-[#45572f] uppercase tracking-wider group-hover:text-[#cfa006] transition-colors">
-                  Xem chi tiết
-                </div>
-              </Link>
-            ))}
+          <div className="product-grid-3 homepage-offers-grid">
+            {products.slice(0, 4).map((product) => {
+              const isSoldOut = product.stockQty <= 0;
+              return (
+                <Link href={`/product/${product.slug}`} key={product._id} className="product-card group relative">
+                  <div className="product-img-wrapper relative">
+                    {isSoldOut ? (
+                      <span className="product-badge !bg-red-600 text-white font-bold">HẾT HÀNG</span>
+                    ) : (
+                      <span className="product-badge">GIẢM 50%</span>
+                    )}
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    {isSoldOut && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 transition-all">
+                        <span className="bg-black/70 text-white text-xs font-black uppercase tracking-wider px-3.5 py-2 rounded-xl">SOLD OUT</span>
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="product-name text-gray-800 line-clamp-2 min-h-[54px] flex items-center justify-center font-semibold text-center mt-2 group-hover:text-[#45572f] transition-colors">
+                    {product.name}
+                  </h3>
+                  <div className="product-price mt-4">
+                    <span className="current-price text-lg font-bold text-gray-900">
+                      Giá: {product.price.toLocaleString("vi-VN")} đ
+                    </span>
+                    <span className="old-price text-sm text-gray-400 line-through">
+                      {product.oldPrice.toLocaleString("vi-VN")} đ
+                    </span>
+                  </div>
+                  <div className="mt-4 pt-2 border-t border-gray-100 text-center text-xs font-bold text-[#45572f] uppercase tracking-wider group-hover:text-[#cfa006] transition-colors">
+                    Xem chi tiết
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>
@@ -147,25 +159,36 @@ export default function Home() {
 
         {!loading && (
           <div className="product-grid-4">
-            {products.slice(0, 4).map((product) => (
-              <Link href={`/product/${product.slug}`} key={product._id} className="product-card small-card group">
-                <div className="product-img-wrapper relative">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="product-name text-gray-800 font-semibold text-center mt-2 group-hover:text-[#45572f] transition-colors">
-                  {product.name}
-                </h3>
-                <div className="product-price mt-2">
-                  <span className="current-price text-base font-bold text-gray-900">
-                    Giá: {product.price.toLocaleString("vi-VN")} đ
-                  </span>
-                </div>
-              </Link>
-            ))}
+            {products.slice(0, 4).map((product) => {
+              const isSoldOut = product.stockQty <= 0;
+              return (
+                <Link href={`/product/${product.slug}`} key={product._id} className="product-card small-card group relative">
+                  <div className="product-img-wrapper relative">
+                    {isSoldOut && (
+                      <span className="product-badge !bg-red-600 text-white font-bold z-20">HẾT HÀNG</span>
+                    )}
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    {isSoldOut && (
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 transition-all">
+                        <span className="bg-black/70 text-white text-xs font-black uppercase tracking-wider px-3.5 py-2 rounded-xl">SOLD OUT</span>
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="product-name text-gray-800 font-semibold text-center mt-2 group-hover:text-[#45572f] transition-colors">
+                    {product.name}
+                  </h3>
+                  <div className="product-price mt-2">
+                    <span className="current-price text-base font-bold text-gray-900">
+                      Giá: {product.price.toLocaleString("vi-VN")} đ
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>

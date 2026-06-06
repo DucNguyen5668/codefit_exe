@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 
 const statusOptions = [
@@ -11,7 +12,10 @@ const statusOptions = [
   { value: "cancelled", label: "Đã hủy", color: "bg-red-100 text-red-700" }
 ];
 
-export default function AdminOrdersPage() {
+function OrdersContent() {
+  const searchParams = useSearchParams();
+  const codeParam = searchParams.get("code");
+
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
@@ -30,7 +34,32 @@ export default function AdminOrdersPage() {
     }
   }, [filter]);
 
+  // Adjust filter to all when search parameter is present
+  useEffect(() => {
+    if (codeParam) {
+      setFilter("all");
+    }
+  }, [codeParam]);
+
   useEffect(() => { queueMicrotask(fetchOrders); }, [fetchOrders]);
+
+  // Auto expand order matching the code parameter
+  useEffect(() => {
+    if (codeParam && orders.length > 0) {
+      const target = orders.find(o => String(o.orderCode) === String(codeParam));
+      if (target) {
+        setExpandedOrder(target._id);
+        
+        // Scroll to the expanded order element if it exists in the DOM
+        setTimeout(() => {
+          const element = document.getElementById(`order-${target._id}`);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 300);
+      }
+    }
+  }, [codeParam, orders]);
 
   const updateStatus = async (orderId, newStatus) => {
     try {
@@ -84,7 +113,13 @@ export default function AdminOrdersPage() {
             const isExpanded = expandedOrder === order._id;
 
             return (
-              <div key={order._id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-md transition-shadow">
+              <div 
+                key={order._id} 
+                id={`order-${order._id}`}
+                className={`bg-white border rounded-2xl overflow-hidden hover:shadow-md transition-shadow duration-300 ${
+                  isExpanded ? "border-[#45572f] ring-1 ring-[#45572f]/20" : "border-gray-200"
+                }`}
+              >
                 {/* Order Header */}
                 <div
                   className="px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer"
@@ -149,7 +184,7 @@ export default function AdminOrdersPage() {
                       {order.paymentStatus !== "paid" && (
                         <button
                           onClick={() => updatePayment(order._id, "paid")}
-                          className="text-sm bg-green-500 text-white px-4 py-1.5 rounded-lg font-bold hover:bg-green-600 transition-colors"
+                          className="text-sm bg-green-500 text-white px-4 py-1.5 rounded-lg font-bold hover:bg-green-600 transition-colors cursor-pointer"
                         >
                           <i className="fas fa-check mr-1"></i>Xác nhận đã thanh toán
                         </button>
@@ -163,5 +198,13 @@ export default function AdminOrdersPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function AdminOrdersPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20"><i className="fas fa-spinner fa-spin text-4xl text-[#45572f]"></i></div>}>
+      <OrdersContent />
+    </Suspense>
   );
 }
