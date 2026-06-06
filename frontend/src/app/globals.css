@@ -1800,7 +1800,8 @@ body {
     .nav-inner {
         flex-direction: row;
         gap: 0;
-        padding: 6px 0;
+        padding-top: 6px;
+        padding-bottom: 6px;
     }
     .nav-links {
         display: none !important;

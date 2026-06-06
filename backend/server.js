@@ -25,6 +25,7 @@ const uploadRoutes = require('./routes/upload');
 const chatbotRoutes = require('./routes/chatbot');
 const postRoutes = require('./routes/posts');
 const userRoutes = require('./routes/users');
+const aboutRoutes = require('./routes/about');
 
 const app = express();
 const server = http.createServer(app);
@@ -72,6 +73,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/about', aboutRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

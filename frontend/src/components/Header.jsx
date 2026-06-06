@@ -131,7 +131,7 @@ export default function Header() {
           
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-2xl text-[#45572f] hover:text-[#cfa006] focus:outline-none order-first"
+            className="md:hidden text-2xl text-[#45572f] hover:text-[#cfa006] focus:outline-none order-first p-2 ml-4"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -171,7 +171,7 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="w-8 md:hidden"></div>
+          <div className="w-8 md:hidden mr-4"></div>
         </div>
 
         {/* Mobile Dropdown - Full screen overlay */}
@@ -218,7 +218,7 @@ export default function Header() {
               </div>
 
               {/* User section for mobile */}
-              {isLoggedIn && (
+              {isLoggedIn ? (
                 <div className="mobile-menu-user">
                   <div className="mobile-menu-user-info">
                     <img src={user?.avatar || "/Avatar.png"} alt="" className="w-10 h-10 rounded-full object-cover border-2 border-[#45572f]/20" />
@@ -249,6 +249,28 @@ export default function Header() {
                   >
                     <i className="fas fa-sign-out-alt"></i> Đăng xuất
                   </button>
+                </div>
+              ) : (
+                <div className="mobile-menu-user">
+                  <div className="flex flex-col items-stretch gap-3 w-full bg-[#f9fafb] p-4 rounded-xl border border-gray-100">
+                    <p className="text-sm text-gray-500 text-center font-medium">Chào bạn! Vui lòng đăng nhập hoặc đăng ký tài khoản.</p>
+                    <div className="grid grid-cols-2 gap-3 w-full">
+                      <Link 
+                        href="/login" 
+                        className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold text-white bg-[#45572f] hover:bg-[#607a44] transition-colors text-center shadow-sm"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <i className="fas fa-sign-in-alt"></i> Đăng nhập
+                      </Link>
+                      <Link 
+                        href="/register" 
+                        className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-semibold text-[#45572f] bg-white border border-[#45572f] hover:bg-[#f0f5eb] transition-colors text-center shadow-sm"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <i className="fas fa-user-plus"></i> Đăng ký
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

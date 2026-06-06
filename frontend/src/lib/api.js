@@ -158,6 +158,14 @@ class ApiClient {
     }
     return null;
   }
+
+  async getAboutContent() {
+    return this.get('/about');
+  }
+
+  async updateAboutContent(content) {
+    return this.put('/about', content);
+  }
 }
 
 const api = new ApiClient();
