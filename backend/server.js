@@ -107,14 +107,23 @@ async function seedInitialPosts() {
             <h3>1. Chứa các hợp chất thực vật có lợi</h3>
             <p>Quả và các loại hạt được mệnh danh là “cường quốc chống oxy hóa” vì giàu chất này. Hạt điều sở hữu polyphenol và carotenoid – hai loại chất chống oxy hóa tốt cho sức khỏe. Chất chống oxy hóa là những hợp chất thực vật, có thể trung hòa các phân tử gây hại được gọi là các gốc tự do, giúp giảm viêm, tăng cường khả năng tự vệ của cơ thể, giúp bạn khỏe mạnh.</p>
 
-            <h3>2. Hỗ trợ kiểm soát và giảm cân hiệu quả</h3>
-            <p>Hạt điều có nguồn năng lượng cao hơn mặt bằng chung của rau củ quả. Tuy nhiên, nghiên cứu chỉ ra rằng cơ thể chúng ta chỉ hấp thụ khoảng 84% lượng kcal thực tế của chúng. Bên cạnh đó, hạt điều rất giàu protein và chất xơ, có tác dụng thúc đẩy cảm giác no lâu, đánh lừa cơ thể và giảm ham muốn thèm ăn xế từ đó giúp bạn ăn ít hơn và kiểm soát cân nặng tốt hơn. Do đó bạn nên ăn hạt điều ở mức độ vừa phải để đạt được hiệu quả tốt nhất.</p>
+            <h3>2. Hỗ trợ giảm cân</h3>
+            <p>Hạt điều có nguồn năng lượng cao hơn mặt bằng chung của rau củ quả. Tuy nhiên, nghiên cứu chỉ ra rằng cơ thể chúng ta chỉ hấp thụ khoảng 84% lượng kcal của chúng.</p>
+            <p>Bên cạnh đó, hạt điều rất giàu protein và chất xơ, có tác dụng thúc đẩy cảm giác no, đánh lừa cơ thể, giảm ham muốn thèm ăn từ đó giúp bạn ăn ít hơn và giảm được cân.</p>
+            <p>Tuy nhiên, với hạt đã qua chế biến như trở thành các món ăn vặt hoặc xay ra làm thành phần của những món ăn khác, thì vẫn chưa được chứng minh khả năng giảm khả năng hấp thụ của cơ thể.</p>
+            <p>Do đó bạn nên ăn hạt điều ở mức độ vừa phải để tránh tình trạng phản tác dụng, gây tăng cân.</p>
 
             <h3>3. Dễ dàng thêm vào chế độ ăn uống lành mạnh</h3>
             <p>Hạt điều được sử dụng để chế biến thành nhiều món ăn khác nhau. Chúng được chế biến thành món ăn vặt trực tiếp, như rang muối, tẩm mật ong,… Đôi khi chúng được sử dụng chung với các món bánh, như bánh kem, bánh cupcake. Ngoài ra, chúng còn kết hợp với sữa yogurt hoặc yến mạch để làm món xế chiều tốt cho cơ thể. Bên cạnh những món ăn trên, chúng còn được sử dụng để làm bơ hạt điều, ăn kèm bánh mì hoặc làm sữa hạt điều béo ngậy bổ sung dưỡng chất lành mạnh.</p>
 
-            <h2>Lưu ý khi sử dụng hạt điều</h2>
-            <p>Tuy hạt điều chứa lượng dinh dưỡng dồi dào, bạn nên tránh lạm dụng, đặc biệt là các loại hạt điều đã tẩm muối nhiều vì có thể chứa lượng natri cao không tốt cho huyết áp. Nên ưu tiên sử dụng hạt điều rang mộc tự nhiên hoặc sấy giòn không muối của Nutricore Tây Nguyên để bảo vệ tối đa sức khỏe cho cả gia đình.</p>
+            <div class="article-note-box">
+              <h2>Lưu ý khi sử dụng hạt điều</h2>
+              <ul>
+                <li>Người lớn không nên ăn quá 200 gram/ngày.</li>
+                <li>Khi hạt được chế biến thành những món vặt đóng sẵn, bạn nên mua nguồn uy tín để tránh tình trạng hạt ôi, thiu.</li>
+                <li>Nên sử dụng hạt điều rang muối vừa phải vì bạn vô tình cung cấp nhiều muối cơ thể, sẽ làm tích nước, dẫn đến tình trạng sưng phù.</li>
+              </ul>
+            </div>
           `
         },
         {
@@ -139,6 +148,17 @@ async function seedInitialPosts() {
 
             <h3>3. Cung cấp chất xơ tốt cho hệ tiêu hóa</h3>
             <p>Lượng chất xơ hòa tan dồi dào trong hạt mắc ca đóng vai trò như prebiotics nuôi dưỡng các lợi khuẩn đường ruột, hỗ trợ quá trình tiêu hóa diễn ra suôn sẻ, ngừa táo bón và các bệnh lý dạ dày.</p>
+
+            <div class="article-note-box">
+              <h2>Lưu ý khi sử dụng hạt macca</h2>
+              <ul>
+                <li>Không ăn quá nhiều trong một ngày, Mắc ca chứa nhiều chất béo tốt nhưng cũng khá nhiều calo. Thường chỉ nên ăn khoảng một nắm nhỏ mỗi ngày (khoảng 10–15 hạt tùy kích thước).</li>
+                <li>Người dị ứng hạt cần cẩn thận, nếu từng dị ứng với các loại hạt như hạnh nhân, óc chó, đậu phộng... thì nên thử lượng rất nhỏ trước hoặc hỏi ý kiến bác sĩ.</li>
+                <li>Trẻ nhỏ nên ăn dưới sự quan sát hạt nguyên có thể gây hóc nếu trẻ ăn quá nhanh. Có thể nghiền nhỏ hoặc bẻ vụn cho dễ ăn hơn.</li>
+                <li>Bảo quản nơi khô ráo: Mắc ca có nhiều dầu nên dễ bị ôi nếu để nơi nóng ẩm. Tốt nhất bảo quản trong hũ kín, tránh ánh nắng; có thể để ngăn mát tủ lạnh.</li>
+                <li>Không dùng khi có mùi lạ: Nếu hạt có mùi hôi dầu, đắng hoặc mềm ỉu bất thường thì không nên tiếp tục sử dụng.</li>
+              </ul>
+            </div>
           `
         },
         {
@@ -163,6 +183,42 @@ async function seedInitialPosts() {
 
             <h3>3. Hỗ trợ kiểm soát mỡ thừa</h3>
             <p>Cacao giúp tăng cường quá trình chuyển hóa chất béo và sử dụng năng lượng của cơ thể. Nhờ có nhiều xơ, cacao tạo cảm giác no lâu, hạn chế các cơn thèm ngọt xế chiều rất hiệu quả cho quá trình ăn kiêng lành mạnh.</p>
+            <p>Ngoài việc giúp tạo cảm giác no cùng hạn chế sự thèm ăn, chất xơ cũng giúp bạn chống chọi rất giỏi với bệnh táo bón. Không chỉ vậy, uống cacao cũng có nghĩa là bạn đang nạp cho mình khá đầy đủ dưỡng chất cần thiết, bao gồm canxi, đồng, kẽm, magie, ... cần thiết cho quy trình trao đổi hóa học và duy trì sức khỏe.</p>
+
+            <h2>Tăng cường trao đổi chất</h2>
+            <p>Cacao có thể tăng cường trao đổi chất nhờ chứa một số chất chống oxy hóa, bao gồm flavonoids và catechins. Những chất này có khả năng giúp giảm việc tích tụ mỡ trong cơ thể và tăng cường quá trình trao đổi chất.</p>
+            <p>Ngoài ra, cacao cũng chứa caffeine and theobromine, có thể tăng cường sự trao đổi chất và năng lượng. Tuy nhiên, để có hiệu quả tốt nhất, việc sử dụng cacao nên kết hợp với một chế độ ăn uống lành mạnh và một lối sống tích cực.</p>
+
+            <h2>Giúp tuần hoàn máu tốt và ổn định huyết áp</h2>
+            <p>Cacao cũng có thể cải thiện lưu thông máu và ổn định huyết áp. Flavonoids trong cacao có khả năng giúp giãn các mạch máu và tăng lưu thông máu. Điều này có thể giúp cải thiện sự lưu thông máu đến các cơ và mô trong cơ thể.</p>
+
+            <h2 class="text-accent-yellow font-bold text-xl mt-8 mb-4">Cách pha cacao nguyên chất đúng chuẩn</h2>
+            <div class="mb-6">
+              <h3 class="font-bold text-base text-gray-800 mb-2">Cách 1: Cacao nóng truyền thống</h3>
+              <ul class="list-disc pl-5 space-y-1 text-gray-700 mb-4">
+                <li>Hòa tan bột cacao với 50ml nước nóng.</li>
+                <li>Thêm sữa tươi hoặc sữa thực vật, khuấy đều.</li>
+                <li>Cho đá vào và thưởng thức ngay.</li>
+              </ul>
+              
+              <h3 class="font-bold text-base text-gray-800 mb-2">Cách 2: Cacao lạnh mát dịu</h3>
+              <ul class="list-disc pl-5 space-y-1 text-gray-700 mb-4">
+                <li>Hòa tan bột cacao với 50ml nước nóng.</li>
+                <li>Thêm sữa tươi hoặc sữa thực vật, khuấy đều.</li>
+                <li>Cho đá vào và thưởng thức ngay.</li>
+              </ul>
+            </div>
+
+            <div class="article-note-box">
+              <h2>Lưu ý khi sử dụng cacao nguyên chất</h2>
+              <ul>
+                <li>Không nên dùng quá nhiều Ca cao nguyên chất trong ngày vì có thể gây khó ngủ hoặc nóng trong ở một số người.</li>
+                <li>Hạn chế uống vào buổi tối do cacao có chứa caffeine và theobromine dễ ảnh hưởng giấc ngủ.</li>
+                <li>Nên giảm lượng đường khi pha để tránh nạp quá nhiều calo.</li>
+                <li>Người bị đau dạ dày hoặc nhạy cảm với caffeine nên dùng với lượng vừa phải.</li>
+                <li>Bảo quản cacao trong hộp kín, nơi khô ráo và tránh ánh nắng để giữ hương vị và chất lượng.</li>
+              </ul>
+            </div>
           `
         },
         {
@@ -187,6 +243,17 @@ async function seedInitialPosts() {
 
             <h3>3. Hỗ trợ bảo vệ gan và phòng ngừa tiểu đường</h3>
             <p>Nhiều nghiên cứu chỉ ra rằng người uống cà phê sạch thường xuyên có nguy cơ mắc tiểu đường tuýp 2 thấp hơn đáng kể. Các enzyme trong cà phê sạch cũng góp phần bảo vệ gan, giảm men gan hiệu quả.</p>
+
+            <div class="article-note-box">
+              <h2>Lưu ý khi sử dụng cà phê nguyên chất</h2>
+              <ul>
+                <li>Không nên uống quá nhiều Cà phê nguyên chất trong ngày để tránh mất ngủ và hồi hộp.</li>
+                <li>Không uống cà phê khi bụng đói vì dễ gây khó chịu cho dạ dày.</li>
+                <li>Hạn chế uống vào buổi tối để không ảnh hưởng giấc ngủ.</li>
+                <li>Nên dùng ít đường, sữa hoặc kem béo để tốt hơn cho sức khỏe.</li>
+                <li>Bảo quản cà phê trong hộp kín, nơi khô ráo để giữ được hương thơm và chất lượng.</li>
+              </ul>
+            </div>
           `
         }
       ];

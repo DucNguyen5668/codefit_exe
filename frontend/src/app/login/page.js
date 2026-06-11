@@ -50,7 +50,12 @@ function LoginContent() {
       router.push(data.user?.role === "admin" ? "/admin" : redirect);
     } catch (err) {
       console.error("Google Auth error:", err);
-      setError(err.message || "Đăng nhập Google thất bại");
+      let errMsg = err.message || "Đăng nhập Google thất bại";
+      if (err.code === "auth/unauthorized-domain" || (err.message && err.message.includes("unauthorized-domain"))) {
+        const currentDomain = typeof window !== "undefined" ? window.location.hostname : "tên miền hiện tại";
+        errMsg = `Tên miền '${currentDomain}' chưa được ủy quyền trong Firebase Console. Vui lòng thêm '${currentDomain}' vào mục Authorized Domains tại Cài đặt Authentication của Firebase.`;
+      }
+      setError(errMsg);
     } finally {
       setLoading(false);
     }
